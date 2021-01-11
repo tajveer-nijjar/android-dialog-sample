@@ -3,23 +3,46 @@ using Android.App;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.Design.Widget;
-using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
+using AndroidX.AppCompat.App;
+using AndroidX.AppCompat.Widget;
+using AlertDialog = AndroidX.AppCompat.App.AlertDialog;
+using Toolbar = AndroidX.AppCompat.Widget.Toolbar;
 
 namespace DialogBoxSample
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
     public class MainActivity : AppCompatActivity
     {
+        private AlertDialog.Builder _builder;
+        private AlertDialog _loadingDialog;
+        private TextView _loadingProgressMessageTextView;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
 
-            Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
+            Toolbar toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
+            SetSupportActionBar(toolbar);
+
+            var showDialogButton = FindViewById<Button>(Resource.Id.showDialogButton);
+            showDialogButton.Click += ShowDialogButton_Click;
         }
-	}
+
+        private void ShowDialogButton_Click(object sender, EventArgs e)
+        {
+            _builder = new AndroidX.AppCompat.App.AlertDialog.Builder(this);
+            LayoutInflater inflater = this.LayoutInflater;
+            View dialogView = inflater.Inflate(Resource.Layout.layout_loading, null);
+            _builder.SetView(dialogView);
+            _loadingDialog = _builder.Create();
+            _loadingProgressMessageTextView = dialogView.FindViewById<TextView>(Resource.Id.loadingProgressMessageTextView);
+            _loadingProgressMessageTextView.Text = "This is loading";
+            _loadingDialog.Show();
+        }
+    }
 }
