@@ -37,7 +37,7 @@ namespace DialogBoxSample
         {
             _builder = new AndroidX.AppCompat.App.AlertDialog.Builder(this);
             LayoutInflater inflater = this.LayoutInflater;
-            View dialogView = inflater.Inflate(Resource.Layout.layout_loading, null);
+            View dialogView = inflater.Inflate(Resource.Layout.layout_loading_dialog, null);
             _builder.SetView(dialogView);
             _loadingDialog = _builder.Create();
             _loadingProgressMessageTextView = dialogView.FindViewById<TextView>(Resource.Id.loadingProgressMessageTextView);
