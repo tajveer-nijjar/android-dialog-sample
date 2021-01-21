@@ -1,12 +1,16 @@
 ﻿using System;
 using Android.App;
+using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.Design.Widget;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using AndroidX.AppCompat.App;
 using AndroidX.AppCompat.Widget;
+using static Android.App.ActionBar;
 using AlertDialog = AndroidX.AppCompat.App.AlertDialog;
 using Toolbar = AndroidX.AppCompat.Widget.Toolbar;
 
@@ -42,7 +46,38 @@ namespace DialogBoxSample
             _loadingDialog = _builder.Create();
             _loadingProgressMessageTextView = dialogView.FindViewById<TextView>(Resource.Id.loadingProgressMessageTextView);
             _loadingProgressMessageTextView.Text = "This is loading";
+            MoveDialogToRightTopCorner();
+
             _loadingDialog.Show();
+        }
+
+        private void MoveDialogToRightTopCorner()
+        {
+            Window window = _loadingDialog.Window;
+            WindowManagerLayoutParams wlp = window.Attributes;
+            wlp.Gravity = GravityFlags.Top | GravityFlags.Right;
+            wlp.Width = LayoutParams.MatchParent;
+            wlp.Flags &= WindowManagerFlags.DimBehind;
+            window.Attributes = wlp;
+
+            int size = CalculateSizeOfToolbar();
+
+            ColorDrawable back = new ColorDrawable(Color.White);
+            InsetDrawable inset = new InsetDrawable(back, 0, size, 100, 0);
+            _loadingDialog.Window.SetBackgroundDrawable(inset);
+
+        }
+
+        private int CalculateSizeOfToolbar()
+        {
+            int size = 0;
+            TypedValue tv = new TypedValue();
+            if (Theme.ResolveAttribute(Android.Resource.Attribute.ActionBarSize, tv, true)) 
+            {
+                size = TypedValue.ComplexToDimensionPixelSize(tv.Data, Resources.DisplayMetrics);
+            }
+
+            return size;
         }
     }
 }

@@ -7,7 +7,7 @@
     android:padding="16dp"
     android:clipToPadding="false"
     android:orientation="horizontal"
-    android:background="@android:color/transparent">
+    >
     
     <ProgressBar
         android:layout_width="32dp"
